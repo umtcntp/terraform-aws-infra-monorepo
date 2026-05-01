@@ -1,0 +1,29 @@
+name: Terraform Simple
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "tf-*/**"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: tf-loops   # şimdilik tek klasör
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - run: terraform init
+      - run: terraform plan

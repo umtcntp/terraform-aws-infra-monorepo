@@ -1,0 +1,13 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Secrets
+*.tfvars
+
+# SSH Keys (senin klasör)
+ec2-instance-keys/
+
+# OS
+.DS_Store
