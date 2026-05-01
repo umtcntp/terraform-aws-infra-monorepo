@@ -1,4 +1,4 @@
-name: Terraform Simple
+name: Terraform Monorepo
 
 on:
   push:
@@ -7,12 +7,32 @@ on:
       - "tf-*/**"
 
 jobs:
-  terraform:
+  detect:
     runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.changed.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: changed
+        uses: tj-actions/changed-files@v44
+        with:
+          dir_names: true
+          files: |
+            tf-*/**/*.tf
+
+  terraform:
+    needs: detect
+    if: needs.detect.outputs.dirs != '[]'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dir: ${{ fromJSON(needs.detect.outputs.dirs) }}
 
     defaults:
       run:
-        working-directory: tf-loops   # şimdilik tek klasör
+        working-directory: ${{ matrix.dir }}
 
     steps:
       - uses: actions/checkout@v4
