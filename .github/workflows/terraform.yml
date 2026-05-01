@@ -1,4 +1,4 @@
-name: Terraform Monorepo
+name: Terraform Simple
 
 on:
   push:
@@ -7,36 +7,19 @@ on:
       - "tf-*/**"
 
 jobs:
-  detect:
-    runs-on: ubuntu-latest
-    outputs:
-      dirs: ${{ steps.changed.outputs.all_changed_files }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - id: changed
-        uses: tj-actions/changed-files@v44
-        with:
-          dir_names: true
-          json: true
-          files: |
-            tf-*/**/*.tf
-
   terraform:
-    needs: detect
-    if: needs.detect.outputs.dirs != '[]'
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        dir: ${{ fromJSON(needs.detect.outputs.dirs) }}
-
-    defaults:
-      run:
-        working-directory: ${{ matrix.dir }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed folder
+        id: changed
+        run: |
+          DIR=$(git diff --name-only HEAD^ HEAD | grep '^tf-' | cut -d'/' -f1 | uniq)
+          echo "DIR=$DIR" >> $GITHUB_OUTPUT
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -46,6 +29,9 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
 
-      - run: terraform init
-      - run: terraform plan
-      - run: terraform apply -auto-approve
+      - name: Run Terraform
+        run: |
+          cd ${{ steps.changed.outputs.DIR }}
+          terraform init
+          terraform plan
+          terraform apply -auto-approve
