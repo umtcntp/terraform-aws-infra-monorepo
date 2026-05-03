@@ -34,4 +34,4 @@ jobs:
           cd ${{ steps.changed.outputs.DIR }}
           terraform init
           terraform plan
-          terraform apply -auto-approve
+          #terraform apply -auto-approve
