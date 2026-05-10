@@ -90,3 +90,4 @@ resource "aws_key_pair" "deployer" {
 output "fetched_info_from_aws" {
   value = format("%s%s", "ssh -i /Users/rahulwagh/.ssh/aws_ec2_terraform ubuntu@", aws_instance.ec2_example.public_dns)
 }
+#
