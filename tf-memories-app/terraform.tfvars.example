@@ -1,0 +1,17 @@
+aws_region   = "eu-central-1"
+project_name = "memories-app"
+environment  = "prod"
+
+domain_name          = "clovermoments.store"
+frontend_domain_name = "www.clovermoments.store"
+api_domain_name      = "api.clovermoments.store"
+
+budget_limit_usd   = 5
+budget_alert_email = "umutcantop1998@gmail.com"
+
+frontend_bucket_name = "clovermoments-store-frontend"
+
+instance_type    = "t4g.small"
+allowed_ssh_cidr = "0.0.0.0/0"
+
+enable_frontend_custom_domain = false
