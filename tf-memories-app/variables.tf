@@ -67,5 +67,5 @@ variable "allowed_ssh_cidr" {
 variable "enable_frontend_custom_domain" {
   type        = bool
   description = "Enable custom domain for CloudFront after ACM certificate is issued"
-  default     = false
+  default     = true
 }
