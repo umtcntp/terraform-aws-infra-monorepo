@@ -61,7 +61,7 @@ variable "instance_type" {
 variable "allowed_ssh_cidr" {
   type        = string
   description = "CIDR allowed to SSH into EC2"
-  default     = "31.223.99.137/32"
+  default     = "31.223.96.155/32"
 }
 
 variable "enable_frontend_custom_domain" {
